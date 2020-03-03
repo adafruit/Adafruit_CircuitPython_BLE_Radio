@@ -34,8 +34,7 @@ setup(
     author_email='circuitpython@adafruit.com',
 
     install_requires=[
-        'Adafruit-Blinka',
-        'adafruit_ble'
+        'adafruit-circuitpython-ble'
     ],
 
     # Choose your license
