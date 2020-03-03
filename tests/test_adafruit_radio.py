@@ -136,8 +136,7 @@ def test_radio_receive_full_no_messages(radio):
     radio.ble.start_scan.return_value = []
     assert radio.receive_full() is None
     radio.ble.start_scan.assert_called_once_with(
-        adafruit_radio.AdafruitRadio, minimum_rssi=-255, timeout=1,
-        extended=True
+        adafruit_radio.AdafruitRadio, minimum_rssi=-255, timeout=1, extended=True
     )
     radio.ble.stop_scan.assert_called_once_with()
 
@@ -170,9 +169,7 @@ def test_radio_receive_full_and_remove_expired_message_metadata(radio):
     mock_entry.address.address_bytes = b"adr2"
     mock_entry.rssi = -40
     radio.ble.start_scan.return_value = [mock_entry]
-    radio.msg_pool.add(
-        (time.monotonic() - adafruit_radio.AD_DURATION - 1, 42, 0, b"addr")
-    )
+    radio.msg_pool.add((time.monotonic() - adafruit_radio.AD_DURATION - 1, 42, 0, b"addr"))
     result = radio.receive_full()
     assert result[0] == b"Hello"
     assert result[1] == -40
