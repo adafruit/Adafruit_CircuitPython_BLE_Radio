@@ -41,9 +41,10 @@ Simple byte and string based inter-device communication via BLE.
 """
 import time
 import struct
-import random
+from micropython import const
 from adafruit_ble import BLERadio
-from adafruit_ble.advertising.adafruit import AdafruitRadio
+from adafruit_ble.advertising import Advertisement, LazyObjectField
+from adafruit_ble.advertising.standard import ManufacturerData
 
 
 __version__ = "0.0.0-auto.0"
@@ -55,6 +56,42 @@ MAX_LENGTH = 248
 
 #: Amount of time to advertise a message (in seconds).
 AD_DURATION = 0.5
+
+_MANUFACTURING_DATA_ADT = const(0xFF)
+_ADAFRUIT_COMPANY_ID = const(0x0822)
+_RADIO_DATA_ID = const(0x0001)  # TODO: check this isn't already taken.
+
+
+class _RadioAdvertisement(Advertisement):
+    """Broadcast arbitrary bytes as a radio message."""
+
+    prefix = struct.pack("<BBH", 0x3, 0xFF, _ADAFRUIT_COMPANY_ID)
+    manufacturer_data = LazyObjectField(
+        ManufacturerData,
+        "manufacturer_data",
+        advertising_data_type=_MANUFACTURING_DATA_ADT,
+        company_id=_ADAFRUIT_COMPANY_ID,
+        key_encoding="<H",
+    )
+
+    @classmethod
+    def matches(cls, entry):
+        if len(entry.advertisement_bytes) < 6:
+            return False
+        # Check the key position within the manufacturer data. We already know
+        # prefix matches so we don't need to check it twice.
+        return struct.unpack_from("<H", entry.advertisement_bytes, 5)[0] == _RADIO_DATA_ID
+
+    @property
+    def msg(self):
+        """Raw radio data"""
+        if _RADIO_DATA_ID not in self.manufacturer_data.data:
+            return b""
+        return self.manufacturer_data.data[_RADIO_DATA_ID]
+
+    @msg.setter
+    def msg(self, value):
+        self.manufacturer_data.data[_RADIO_DATA_ID] = value
 
 
 class Radio:
@@ -108,21 +145,12 @@ class Radio:
         """
         # Ensure length of message.
         if len(message) > MAX_LENGTH:
-            raise ValueError(
-                "Message too long (max length = {})".format(MAX_LENGTH)
-            )
-        advertisement = AdafruitRadio()
-        # Channel byte.
-        chan = struct.pack("<B", self._channel)
-        # "Unique" id byte (to avoid duplication when receiving messages in
-        # an AD_DURATION timeframe).
-        uid = struct.pack("<B", self.uid)
-        # Increment (and reset if needed) the uid.
-        self.uid += 1
-        if self.uid > 255:
-            self.uid = 0
+            raise ValueError("Message too long (max length = {})".format(MAX_LENGTH))
+        advertisement = _RadioAdvertisement()
         # Concatenate the bytes that make up the advertised message.
-        advertisement.msg = chan + uid + message
+        advertisement.msg = struct.pack("<BB", self._channel, self.uid) + message
+
+        self.uid = (self.uid + 1) % 255
         # Advertise (block) for AD_DURATION period of time.
         self.ble.start_advertising(advertisement)
         time.sleep(AD_DURATION)
@@ -138,8 +166,7 @@ class Radio:
         msg = self.receive_full()
         if msg:
             return msg[0].decode("utf-8").replace("\x00", "")
-        else:
-            return None
+        return None
 
     def receive_full(self):
         """
@@ -158,7 +185,7 @@ class Radio:
         """
         try:
             for entry in self.ble.start_scan(
-                AdafruitRadio, minimum_rssi=-255, timeout=1, extended=True
+                _RadioAdvertisement, minimum_rssi=-255, timeout=1, extended=True
             ):
                 # Extract channel and unique message ID bytes.
                 chan, uid = struct.unpack("<BB", entry.msg[:2])
