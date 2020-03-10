@@ -77,7 +77,7 @@ installed (``pip install pytest pytest-coverage``).
 
 Run the unit tests with the following command::
 
-    $ pytest --cov-report term-missing --cov=adafruit_radio tests/
+    $ pytest --cov-report term-missing --cov=adafruit_ble_radio tests/
 
 Contributing
 ============

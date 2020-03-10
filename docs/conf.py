@@ -21,7 +21,7 @@ extensions = [
 # Uncomment the below if you use native CircuitPython modules such as
 # digitalio, micropython and busio. List the modules you use. Without it, the
 # autodoc module docs will fail to generate with a warning.
-autodoc_mock_imports = ["digitalio", "busio", "adafruit_ble"]
+autodoc_mock_imports = ["digitalio", "busio", "adafruit_ble", "micropython"]
 
 
 intersphinx_mapping = {
@@ -38,7 +38,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "Adafruit radio Library"
+project = "Adafruit BLE Radio Library"
 copyright = "2019 Nicholas H.Tollervey"
 author = "Nicholas H.Tollervey"
 
