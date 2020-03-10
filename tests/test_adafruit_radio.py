@@ -1,9 +1,9 @@
 """
-Simple unit tests for the adafruit_radio module. Uses experimental mocking
+Simple unit tests for the adafruit_ble_radio module. Uses experimental mocking
 found in the testconf.py file. See comments therein for explanation of how it
 works.
 """
-import adafruit_radio
+import adafruit_ble_radio
 import pytest
 import struct
 import time
@@ -15,7 +15,7 @@ def radio():
     """
     A fixture to recreate a new Radio instance for each test that needs it.
     """
-    return adafruit_radio.Radio()
+    return adafruit_ble_radio.Radio()
 
 
 def test_radio_init_default():
@@ -27,8 +27,8 @@ def test_radio_init_default():
     * The self.msg_pool is initialised as an empty set.
     * The channel is set to the default 42.
     """
-    r = adafruit_radio.Radio()
-    assert r.ble == adafruit_radio.BLERadio()
+    r = adafruit_ble_radio.Radio()
+    assert r.ble == adafruit_ble_radio.BLERadio()
     assert r.uid == 0
     assert r.msg_pool == set()
     assert r._channel == 42
@@ -38,7 +38,7 @@ def test_radio_init_channel():
     """
     If a channel argument is passed to initialisation, this is correctly set.
     """
-    r = adafruit_radio.Radio(channel=7)
+    r = adafruit_ble_radio.Radio(channel=7)
     assert r._channel == 7
 
 
@@ -83,7 +83,7 @@ def test_radio_send_bytes_too_long(radio):
     A ValueError is raised if the message to be sent is too long (defined by
     MAX_LENGTH).
     """
-    msg = bytes(adafruit_radio.MAX_LENGTH + 1)
+    msg = bytes(adafruit_ble_radio.MAX_LENGTH + 1)
     with pytest.raises(ValueError):
         radio.send_bytes(msg)
 
@@ -95,10 +95,10 @@ def test_radio_send_bytes(radio):
     """
     radio.uid = 255  # set up for cycle back to 0.
     msg = b"Hello"
-    with mock.patch("adafruit_radio.time.sleep") as mock_sleep:
+    with mock.patch("adafruit_ble_radio.time.sleep") as mock_sleep:
         radio.send_bytes(msg)
-        mock_sleep.assert_called_once_with(adafruit_radio.AD_DURATION)
-    spy_advertisement = adafruit_radio.AdafruitRadio()
+        mock_sleep.assert_called_once_with(adafruit_ble_radio.AD_DURATION)
+    spy_advertisement = adafruit_ble_radio.AdafruitRadio()
     chan = struct.pack("<B", radio._channel)
     uid = struct.pack("<B", 255)
     assert spy_advertisement.msg == chan + uid + msg
@@ -136,7 +136,7 @@ def test_radio_receive_full_no_messages(radio):
     radio.ble.start_scan.return_value = []
     assert radio.receive_full() is None
     radio.ble.start_scan.assert_called_once_with(
-        adafruit_radio.AdafruitRadio, minimum_rssi=-255, timeout=1, extended=True
+        adafruit_ble_radio.AdafruitRadio, minimum_rssi=-255, timeout=1, extended=True
     )
     radio.ble.stop_scan.assert_called_once_with()
 
@@ -169,7 +169,7 @@ def test_radio_receive_full_and_remove_expired_message_metadata(radio):
     mock_entry.address.address_bytes = b"adr2"
     mock_entry.rssi = -40
     radio.ble.start_scan.return_value = [mock_entry]
-    radio.msg_pool.add((time.monotonic() - adafruit_radio.AD_DURATION - 1, 42, 0, b"addr"))
+    radio.msg_pool.add((time.monotonic() - adafruit_ble_radio.AD_DURATION - 1, 42, 0, b"addr"))
     result = radio.receive_full()
     assert result[0] == b"Hello"
     assert result[1] == -40

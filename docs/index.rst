@@ -29,7 +29,7 @@ Table of Contents
 .. toctree::
     :caption: Other Links
 
-    Download <https://github.com/adafruit/adafruit_CircuitPython_radio/releases/latest>
+    Download <https://github.com/adafruit/adafruit_CircuitPython_BLE_Radio/releases/latest>
     CircuitPython Reference Documentation <https://circuitpython.readthedocs.io>
     CircuitPython Support Forum <https://forums.adafruit.com/viewforum.php?f=60>
     Discord Chat <https://adafru.it/discord>

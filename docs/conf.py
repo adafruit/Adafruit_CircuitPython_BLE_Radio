@@ -38,7 +38,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "Adafruit radio Library"
+project = "Adafruit BLE Radio Library"
 copyright = "2019 Nicholas H.Tollervey"
 author = "Nicholas H.Tollervey"
 
