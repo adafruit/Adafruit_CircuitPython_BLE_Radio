@@ -5,7 +5,7 @@ The buttons change the message to be sent.
 """
 import digitalio
 import board
-from adafruit_radio import Radio
+from adafruit_ble_radio import Radio
 
 
 slide_switch = digitalio.DigitalInOut(board.SLIDE_SWITCH)

@@ -25,7 +25,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/x-rst",
     # The project's main homepage.
-    url="https://github.com/adafruit/Adafruit_CircuitPython_radio",
+    url="https://github.com/adafruit/Adafruit_CircuitPython_BLE_Radio",
     # Author details
     author="Adafruit Industries",
     author_email="circuitpython@adafruit.com",
@@ -49,5 +49,5 @@ setup(
     # simple. Or you can use find_packages().
     # TODO: IF LIBRARY FILES ARE A PACKAGE FOLDER,
     #       CHANGE `py_modules=['...']` TO `packages=['...']`
-    py_modules=["adafruit_radio"],
+    py_modules=["adafruit_ble_radio"],
 )

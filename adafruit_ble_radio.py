@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`adafruit_radio`
+`adafruit_ble_radio`
 ================================================================================
 
 Simple byte and string based inter-device communication via BLE.
@@ -48,7 +48,7 @@ from adafruit_ble.advertising.standard import ManufacturerData
 
 
 __version__ = "0.0.0-auto.0"
-__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_radio.git"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BLE_Radio.git"
 
 
 #: Maximum length of a message (in bytes).

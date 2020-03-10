@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_radio.svg?branch=master
-    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_radio
+.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_BLE_Radio.svg?branch=master
+    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_BLE_Radio
     :alt: Build Status
 
 This library provides simple byte and string based inter-device communication
@@ -36,7 +36,7 @@ Usage Example
 
 All the functionality is exposed via the very simple ``Radio`` class::
 
-    from adafruit_radio import Radio
+    from adafruit_ble_radio import Radio
 
 
     # A radio instance listens/broadcasts on a numbered channel.
@@ -47,7 +47,7 @@ All the functionality is exposed via the very simple ``Radio`` class::
 
     # Broadcast a simple string message.
     r.send("Hello")
-    
+
     # Broadcast raw bytes.
     r.send_bytes(b"Hello")
 
@@ -83,7 +83,7 @@ Contributing
 ============
 
 Contributions are welcome! Please read our `Code of Conduct
-<https://github.com/adafruit/Adafruit_CircuitPython_radio/blob/master/CODE_OF_CONDUCT.md>`_
+<https://github.com/adafruit/Adafruit_CircuitPython_BLE_Radio/blob/master/CODE_OF_CONDUCT.md>`_
 before contributing to help this project stay welcoming.
 
 Documentation
