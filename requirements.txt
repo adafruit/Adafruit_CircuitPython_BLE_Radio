@@ -1,1 +1,2 @@
 adafruit-circuitpython-ble
+Adafruit-Blinka

@@ -18,7 +18,7 @@ with open(path.join(here, "README.rst"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="adafruit-circuitpython-radio",
+    name="adafruit-circuitpython-ble-radio",
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
     description="Simple byte and string based inter-device communication via BLE.",
