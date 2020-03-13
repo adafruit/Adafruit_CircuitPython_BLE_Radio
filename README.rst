@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_BLE_Radio.svg?branch=master
-    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_BLE_Radio
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_BLE_Radio/workflows/Build%20CI/badge.svg
+    :target: https://github.com/adafruit/Adafruit_CircuitPython_BLE_Radio/actions
     :alt: Build Status
 
 This library provides simple byte and string based inter-device communication
