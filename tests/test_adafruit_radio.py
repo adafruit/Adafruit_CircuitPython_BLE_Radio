@@ -169,7 +169,9 @@ def test_radio_receive_full_and_remove_expired_message_metadata(radio):
     mock_entry.address.address_bytes = b"adr2"
     mock_entry.rssi = -40
     radio.ble.start_scan.return_value = [mock_entry]
-    radio.msg_pool.add((time.monotonic() - adafruit_ble_radio.AD_DURATION - 1, 42, 0, b"addr"))
+    radio.msg_pool.add(
+        (time.monotonic() - adafruit_ble_radio.AD_DURATION - 1, 42, 0, b"addr")
+    )
     result = radio.receive_full()
     assert result[0] == b"Hello"
     assert result[1] == -40

@@ -80,7 +80,9 @@ class _RadioAdvertisement(Advertisement):
             return False
         # Check the key position within the manufacturer data. We already know
         # prefix matches so we don't need to check it twice.
-        return struct.unpack_from("<H", entry.advertisement_bytes, 5)[0] == _RADIO_DATA_ID
+        return (
+            struct.unpack_from("<H", entry.advertisement_bytes, 5)[0] == _RADIO_DATA_ID
+        )
 
     @property
     def msg(self):
