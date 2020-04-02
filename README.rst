@@ -1,8 +1,8 @@
 Introduction
 ============
 
-.. image:: https://readthedocs.org/projects/adafruit-circuitpython-radio/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/radio/en/latest/
+.. image:: https://readthedocs.org/projects/adafruit-circuitpython-ble-radio/badge/?version=latest
+    :target: https://circuitpython.readthedocs.io/projects/ble_radio/en/latest/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/discord/327254708534116352.svg
