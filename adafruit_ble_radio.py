@@ -65,7 +65,7 @@ _RADIO_DATA_ID = const(0x0001)  # TODO: check this isn't already taken.
 class _RadioAdvertisement(Advertisement):
     """Broadcast arbitrary bytes as a radio message."""
 
-    prefix = struct.pack("<BBH", 0x3, 0xFF, _ADAFRUIT_COMPANY_ID)
+    match_prefixes = (struct.pack("<BH", 0xFF, _ADAFRUIT_COMPANY_ID),)
     manufacturer_data = LazyObjectField(
         ManufacturerData,
         "manufacturer_data",
