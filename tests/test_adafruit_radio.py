@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+#
+# SPDX-License-Identifier: Unlicense
+
 """
 Simple unit tests for the adafruit_ble_radio module. Uses experimental mocking
 found in the testconf.py file. See comments therein for explanation of how it
