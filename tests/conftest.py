@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+#
+# SPDX-License-Identifier: Unlicense
+
 """
 This file ensures everything is in place to run PyTest based unit tests against
 the adafruit_radio module. It works by using Python's mock library to add

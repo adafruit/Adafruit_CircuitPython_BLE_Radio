@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 """
 This demo uses the adafruit_radio module to send and receive messages.
 Devices are switched between broadcast and scanning using the slide switch.
