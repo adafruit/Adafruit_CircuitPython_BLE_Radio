@@ -31,17 +31,17 @@ def mock_imported_modules():
     can be imported with modules which may not be available.
     """
     module_paths = set()
-    for m in MOCK_MODULES:
-        namespaces = m.split(".")
-        ns = []
+    for mock in MOCK_MODULES:
+        namespaces = mock.split(".")
+        namespace = []
         for n in namespaces:
-            ns.append(n)
-            module_paths.add(".".join(ns))
+            namespace.append(n)
+            module_paths.add(".".join(namespace))
     for m_path in module_paths:
         sys.modules[m_path] = MagicMock()
 
 
-def pytest_runtest_setup(item):
+def pytest_runtest_setup():
     """
     Called immediately before any test function is called.
 

@@ -7,11 +7,11 @@ Simple unit tests for the adafruit_ble_radio module. Uses experimental mocking
 found in the testconf.py file. See comments therein for explanation of how it
 works.
 """
-import adafruit_ble_radio
-import pytest
 import struct
 import time
 from unittest import mock
+import pytest
+import adafruit_ble_radio
 
 
 @pytest.fixture
@@ -35,7 +35,7 @@ def test_radio_init_default():
     assert r.ble == adafruit_ble_radio.BLERadio()
     assert r.uid == 0
     assert r.msg_pool == set()
-    assert r._channel == 42
+    assert r._channel == 42  # pylint: disable=protected-access
 
 
 def test_radio_init_channel():
@@ -43,7 +43,7 @@ def test_radio_init_channel():
     If a channel argument is passed to initialisation, this is correctly set.
     """
     r = adafruit_ble_radio.Radio(channel=7)
-    assert r._channel == 7
+    assert r._channel == 7  # pylint: disable=protected-access
 
 
 def test_radio_configure_channel(radio):
@@ -51,9 +51,9 @@ def test_radio_configure_channel(radio):
     If a valid channel argument is passed to the configure method, the Radio
     instance's channel is updated to reflect this.
     """
-    assert radio._channel == 42
+    assert radio._channel == 42  # pylint: disable=protected-access
     radio.configure(channel=7)
-    assert radio._channel == 7
+    assert radio._channel == 7  # pylint: disable=protected-access
 
 
 def test_radio_configure_channel_out_of_bounds(radio):
@@ -67,9 +67,9 @@ def test_radio_configure_channel_out_of_bounds(radio):
         radio.configure(channel=256)
     # Add just-in-bounds checks too.
     radio.configure(channel=0)
-    assert radio._channel == 0
+    assert radio._channel == 0  # pylint: disable=protected-access
     radio.configure(channel=255)
-    assert radio._channel == 255
+    assert radio._channel == 255  # pylint: disable=protected-access
 
 
 def test_radio_send(radio):
@@ -102,8 +102,10 @@ def test_radio_send_bytes(radio):
     with mock.patch("adafruit_ble_radio.time.sleep") as mock_sleep:
         radio.send_bytes(msg)
         mock_sleep.assert_called_once_with(adafruit_ble_radio.AD_DURATION)
-    spy_advertisement = adafruit_ble_radio.AdafruitRadio()
-    chan = struct.pack("<B", radio._channel)
+    spy_advertisement = (
+        adafruit_ble_radio._RadioAdvertisement()
+    )  # pylint: disable=protected-access
+    chan = struct.pack("<B", radio._channel)  # pylint: disable=protected-access
     uid = struct.pack("<B", 255)
     assert spy_advertisement.msg == chan + uid + msg
     radio.ble.start_advertising.assert_called_once_with(spy_advertisement)
@@ -140,7 +142,10 @@ def test_radio_receive_full_no_messages(radio):
     radio.ble.start_scan.return_value = []
     assert radio.receive_full() is None
     radio.ble.start_scan.assert_called_once_with(
-        adafruit_ble_radio.AdafruitRadio, minimum_rssi=-255, timeout=1, extended=True
+        adafruit_ble_radio._RadioAdvertisement,
+        minimum_rssi=-255,
+        timeout=1,
+        extended=True,
     )
     radio.ble.stop_scan.assert_called_once_with()
 
