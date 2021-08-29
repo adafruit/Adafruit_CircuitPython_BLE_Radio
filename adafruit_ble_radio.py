@@ -142,19 +142,19 @@ class Radio:
         time.sleep(AD_DURATION)
         self.ble.stop_advertising()
 
-    def receive(self):
+    def receive(self, **args):
         """
         Returns a message received on the channel on which the radio is
         listening.
 
         :return: A string representation of the received message, or else None.
         """
-        msg = self.receive_full()
+        msg = self.receive_full(**args)
         if msg:
             return msg[0].decode("utf-8").replace("\x00", "")
         return None
 
-    def receive_full(self):
+    def receive_full(self, wait=1):
         """
         Returns a tuple containing three values representing a message received
         on the channel on which the radio is listening. If no message was
@@ -167,11 +167,14 @@ class Radio:
         * a microsecond timestamp: the value returned by time.monotonic() when
           the message was received.
 
+        :param float wait: The length of time the radio listens for a
+        broadcast
+
         :return: A tuple representation of the received message, or else None.
         """
         try:
             for entry in self.ble.start_scan(
-                _RadioAdvertisement, minimum_rssi=-255, timeout=1, extended=True
+                _RadioAdvertisement, minimum_rssi=-255, timeout=wait, extended=True
             ):
                 # Extract channel and unique message ID bytes.
                 chan, uid = struct.unpack("<BB", entry.msg[:2])
