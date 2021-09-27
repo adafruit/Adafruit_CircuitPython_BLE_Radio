@@ -149,7 +149,7 @@ class Radio:
 
         :return: A string representation of the received message, or else None.
         """
-        msg = self.receive_full(timeout)
+        msg = self.receive_full(timeout=timeout)
         if msg:
             return msg[0].decode("utf-8").replace("\x00", "")
         return None
