@@ -79,6 +79,11 @@ Run the unit tests with the following command::
 
     $ pytest --cov-report term-missing --cov=adafruit_ble_radio tests/
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/ble_radio/en/latest/>`_.
+
 Contributing
 ============
 
