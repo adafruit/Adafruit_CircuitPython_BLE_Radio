@@ -56,7 +56,9 @@ def test_radio_configure_channel(radio_obj):
     assert radio_obj._channel == 7  # pylint: disable=protected-access
 
 
-def test_radio_configure_channel_out_of_bounds(radio_obj):
+def test_radio_configure_channel_out_of_bounds(
+    radio_obj,
+):  # pylint: disable=invalid-name
     """
     If a channel not in the range 0-255 is passed into the configure method,
     then a ValueError exception is raised.
@@ -135,7 +137,7 @@ def test_radio_receive(radio_obj):
     assert radio_obj.receive() == "testing 1, 2, 3"
 
 
-def test_radio_receive_full_no_messages(radio_obj):
+def test_radio_receive_full_no_messages(radio_obj):  # pylint: disable=invalid-name
     """
     If no messages are detected by receive_full then it returns None.
     """
@@ -150,7 +152,9 @@ def test_radio_receive_full_no_messages(radio_obj):
     radio_obj.ble.stop_scan.assert_called_once_with()
 
 
-def test_radio_receive_full_duplicate_message(radio_obj):
+def test_radio_receive_full_duplicate_message(
+    radio_obj,
+):  # pylint: disable=invalid-name
     """
     If a duplicate message is detected, then receive_full returns None
     (indicating no *new* messages received).
@@ -164,7 +168,9 @@ def test_radio_receive_full_duplicate_message(radio_obj):
     assert radio_obj.receive_full() is None
 
 
-def test_radio_receive_full_and_remove_expired_message_metadata(radio_obj):
+def test_radio_receive_full_and_remove_expired_message_metadata(
+    radio_obj,
+):  # pylint: disable=invalid-name
     """
     Return the non-duplicate message.
 
