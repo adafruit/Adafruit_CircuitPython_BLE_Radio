@@ -2,7 +2,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-ble-radio/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/ble_radio/en/latest/
+    :target: https://docs.circuitpython.org/projects/ble_radio/en/latest/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/discord/327254708534116352.svg
@@ -82,7 +82,7 @@ Run the unit tests with the following command::
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/ble_radio/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/ble_radio/en/latest/>`_.
 
 Contributing
 ============
