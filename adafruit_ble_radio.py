@@ -28,7 +28,10 @@ from micropython import const
 from adafruit_ble import BLERadio
 from adafruit_ble.advertising import Advertisement, LazyObjectField
 from adafruit_ble.advertising.standard import ManufacturerData
-from adafruit_ble.advertising.adafruit import MANUFACTURING_DATA_ADT, ADAFRUIT_COMPANY_ID
+from adafruit_ble.advertising.adafruit import (
+    MANUFACTURING_DATA_ADT,
+    ADAFRUIT_COMPANY_ID,
+)
 
 
 __version__ = "0.0.0-auto.0"
