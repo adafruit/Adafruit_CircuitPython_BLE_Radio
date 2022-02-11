@@ -28,6 +28,10 @@ from micropython import const
 from adafruit_ble import BLERadio
 from adafruit_ble.advertising import Advertisement, LazyObjectField
 from adafruit_ble.advertising.standard import ManufacturerData
+from adafruit_ble.advertising.adafruit import (
+    MANUFACTURING_DATA_ADT,
+    ADAFRUIT_COMPANY_ID,
+)
 
 
 __version__ = "0.0.0-auto.0"
@@ -40,20 +44,18 @@ MAX_LENGTH = 248
 #: Amount of time to advertise a message (in seconds).
 AD_DURATION = 0.5
 
-_MANUFACTURING_DATA_ADT = const(0xFF)
-_ADAFRUIT_COMPANY_ID = const(0x0822)
 _RADIO_DATA_ID = const(0x0001)  # TODO: check this isn't already taken.
 
 
 class _RadioAdvertisement(Advertisement):
     """Broadcast arbitrary bytes as a radio message."""
 
-    match_prefixes = (struct.pack("<BH", 0xFF, _ADAFRUIT_COMPANY_ID),)
+    match_prefixes = (struct.pack("<BH", 0xFF, ADAFRUIT_COMPANY_ID),)
     manufacturer_data = LazyObjectField(
         ManufacturerData,
         "manufacturer_data",
-        advertising_data_type=_MANUFACTURING_DATA_ADT,
-        company_id=_ADAFRUIT_COMPANY_ID,
+        advertising_data_type=MANUFACTURING_DATA_ADT,
+        company_id=ADAFRUIT_COMPANY_ID,
         key_encoding="<H",
     )
 
