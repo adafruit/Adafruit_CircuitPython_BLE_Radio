@@ -146,7 +146,7 @@ class Radio:
         """
         Returns a message received on the channel on which the radio is
         listening.
-        
+
         :param float timeout: The length of time (in seconds) the radio listens for a broadcast
 
         :return: A string representation of the received message, or else None.
