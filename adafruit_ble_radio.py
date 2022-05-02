@@ -22,6 +22,14 @@ Simple byte and string based inter-device communication via BLE.
   https://github.com/adafruit/circuitpython/releases
 
 """
+try:
+    from typing import Optional, Tuple
+    import _bleio
+    from circuitpython_typing import ReadableBuffer
+except ImportError:
+    pass
+
+
 import time
 import struct
 from micropython import const
@@ -60,7 +68,7 @@ class _RadioAdvertisement(Advertisement):
     )
 
     @classmethod
-    def matches(cls, entry):
+    def matches(cls, entry: _bleio.ScanEntry) -> bool:
         """Checks for ID matches"""
         if len(entry.advertisement_bytes) < 6:
             return False
@@ -71,14 +79,14 @@ class _RadioAdvertisement(Advertisement):
         )
 
     @property
-    def msg(self):
+    def msg(self) -> ReadableBuffer:
         """Raw radio data"""
         if _RADIO_DATA_ID not in self.manufacturer_data.data:
             return b""
         return self.manufacturer_data.data[_RADIO_DATA_ID]
 
     @msg.setter
-    def msg(self, value):
+    def msg(self, value: ReadableBuffer) -> None:
         self.manufacturer_data.data[_RADIO_DATA_ID] = value
 
 
@@ -104,7 +112,7 @@ class Radio:
         # Handle user related configuration.
         self.configure(**args)
 
-    def configure(self, channel=42):
+    def configure(self, channel: int = 42) -> None:
         """
         Set configuration values for the radio.
 
@@ -116,7 +124,7 @@ class Radio:
         else:
             raise ValueError("Channel must be in range 0-255")
 
-    def send(self, message):
+    def send(self, message: str) -> None:
         """
         Send a message string on the channel to which the radio is
         broadcasting.
@@ -125,7 +133,7 @@ class Radio:
         """
         return self.send_bytes(message.encode("utf-8"))
 
-    def send_bytes(self, message):
+    def send_bytes(self, message: bytes) -> None:
         """
         Send bytes on the channel to which the radio is broadcasting.
 
@@ -144,7 +152,7 @@ class Radio:
         time.sleep(AD_DURATION)
         self.ble.stop_advertising()
 
-    def receive(self, timeout=1):
+    def receive(self, timeout: float = 1.0) -> str:
         """
         Returns a message received on the channel on which the radio is
         listening.
@@ -158,7 +166,9 @@ class Radio:
             return msg[0].decode("utf-8").replace("\x00", "")
         return None
 
-    def receive_full(self, timeout=1):
+    def receive_full(
+        self, timeout: float = 1.0
+    ) -> Optional[Tuple[ReadableBuffer, int, float]]:
         """
         Returns a tuple containing three values representing a message received
         on the channel on which the radio is listening. If no message was
