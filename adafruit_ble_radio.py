@@ -25,7 +25,7 @@ Simple byte and string based inter-device communication via BLE.
 try:
     from typing import Optional
     import _bleio
-    from circuitpython_typing import ReadableBuffer, WriteableBuffer
+    from circuitpython_typing import ReadableBuffer
 except ImportError:
     pass
 
@@ -112,7 +112,7 @@ class Radio:
         # Handle user related configuration.
         self.configure(**args)
 
-    def configure(self, channel: int=42) -> ValueError:
+    def configure(self, channel: int = 42) -> ValueError:
         """
         Set configuration values for the radio.
 
@@ -152,7 +152,7 @@ class Radio:
         time.sleep(AD_DURATION)
         self.ble.stop_advertising()
 
-    def receive(self, timeout: float=1.0) -> str:
+    def receive(self, timeout: float = 1.0) -> Optional[str]:
         """
         Returns a message received on the channel on which the radio is
         listening.
@@ -166,7 +166,9 @@ class Radio:
             return msg[0].decode("utf-8").replace("\x00", "")
         return None
 
-    def receive_full(self, timeout: float=1.0) -> Optional[tuple[ReadableBuffer, int, float]]:
+    def receive_full(
+        self, timeout: float = 1.0
+    ) -> Optional[tuple[ReadableBuffer, int, float]]:
         """
         Returns a tuple containing three values representing a message received
         on the channel on which the radio is listening. If no message was
