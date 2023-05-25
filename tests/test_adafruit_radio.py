@@ -11,11 +11,15 @@ import struct
 import time
 from unittest import mock
 import pytest
+from adafruit_ble.advertising import Advertisement
 import adafruit_ble_radio
 
 
+# pylint: disable=redefined-outer-name
+
+
 @pytest.fixture
-def radio():
+def radio_obj():
     """
     A fixture to recreate a new Radio instance for each test that needs it.
     """
@@ -104,9 +108,7 @@ def test_radio_send_bytes(radio_obj):
     with mock.patch("adafruit_ble_radio.time.sleep") as mock_sleep:
         radio_obj.send_bytes(msg)
         mock_sleep.assert_called_once_with(adafruit_ble_radio.AD_DURATION)
-    spy_advertisement = (
-        adafruit_ble_radio._RadioAdvertisement()  # pylint: disable=protected-access
-    )  # pylint: disable=protected-access
+    spy_advertisement = Advertisement
     chan = struct.pack("<B", radio_obj._channel)  # pylint: disable=protected-access
     uid = struct.pack("<B", 255)
     assert spy_advertisement.msg == chan + uid + msg
@@ -122,7 +124,7 @@ def test_radio_receive_no_message(radio_obj):
     """
     radio_obj.receive_full = mock.MagicMock(return_value=None)
     assert radio_obj.receive() is None
-    radio_obj.receive_full.assert_called_once_with()
+    radio_obj.receive_full.assert_called_once_with(timeout=1.0)
 
 
 def test_radio_receive(radio_obj):

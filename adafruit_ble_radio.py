@@ -146,7 +146,7 @@ class Radio:
         # Concatenate the bytes that make up the advertised message.
         advertisement.msg = struct.pack("<BB", self._channel, self.uid) + message
 
-        self.uid = (self.uid + 1) % 255
+        self.uid = (self.uid + 1) % 256
         # Advertise (block) for AD_DURATION period of time.
         self.ble.start_advertising(advertisement)
         time.sleep(AD_DURATION)

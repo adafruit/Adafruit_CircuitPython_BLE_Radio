@@ -20,8 +20,11 @@ from unittest.mock import MagicMock
 # should be mocked away. For instance, modules which are available in
 # CircuitPython but not standard Python.
 MOCK_MODULES = [
-    "adafruit_ble.BLERadio",
-    "adafruit_ble.advertising.adafruit.AdafruitRadio",
+    "adafruit_ble",
+    "adafruit_ble.advertising",
+    "adafruit_ble.advertising.standard",
+    "adafruit_ble.advertising.adafruit",
+    "_bleio",
 ]
 
 
