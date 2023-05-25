@@ -119,7 +119,6 @@ def test_radio_send_bytes(radio_obj):
     assert radio_obj.uid == 0
 
 
-@pytest.mark.xfail(reason="Test should be checked and possibly updated")
 def test_radio_receive_no_message(radio_obj):
     """
     If no message is received from the receive_bytes method, then None is
@@ -127,7 +126,7 @@ def test_radio_receive_no_message(radio_obj):
     """
     radio_obj.receive_full = mock.MagicMock(return_value=None)
     assert radio_obj.receive() is None
-    radio_obj.receive_full.assert_called_once_with()
+    radio_obj.receive_full.assert_called_once_with(timeout=1.0)
 
 
 def test_radio_receive(radio_obj):
