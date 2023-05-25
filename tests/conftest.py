@@ -21,6 +21,7 @@ from unittest.mock import MagicMock
 # CircuitPython but not standard Python.
 MOCK_MODULES = [
     "adafruit_ble",
+    "adafruit_ble.advertising",
     "adafruit_ble.advertising.standard",
     "adafruit_ble.advertising.adafruit",
     "_bleio",

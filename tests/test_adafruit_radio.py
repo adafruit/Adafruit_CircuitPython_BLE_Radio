@@ -11,6 +11,7 @@ import struct
 import time
 from unittest import mock
 import pytest
+from adafruit_ble.advertising import Advertisement
 import adafruit_ble_radio
 
 
@@ -97,7 +98,6 @@ def test_radio_send_bytes_too_long(radio_obj):
         radio_obj.send_bytes(msg)
 
 
-@pytest.mark.xfail(reason="Test should be checked and possibly updated")
 def test_radio_send_bytes(radio_obj):
     """
     Ensure the expected message is set on an instance of AdafruitRadio, and
@@ -108,9 +108,7 @@ def test_radio_send_bytes(radio_obj):
     with mock.patch("adafruit_ble_radio.time.sleep") as mock_sleep:
         radio_obj.send_bytes(msg)
         mock_sleep.assert_called_once_with(adafruit_ble_radio.AD_DURATION)
-    spy_advertisement = (
-        adafruit_ble_radio._RadioAdvertisement()  # pylint: disable=protected-access
-    )  # pylint: disable=protected-access
+    spy_advertisement = Advertisement
     chan = struct.pack("<B", radio_obj._channel)  # pylint: disable=protected-access
     uid = struct.pack("<B", 255)
     assert spy_advertisement.msg == chan + uid + msg
