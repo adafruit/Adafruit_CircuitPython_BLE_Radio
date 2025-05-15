@@ -13,6 +13,7 @@ mocked modules exist in sys.modules before the module to be tested is
 imported), and immediately before each test function is evaluated (so changes
 to state remain isolated between tests).
 """
+
 import sys
 from unittest.mock import MagicMock
 

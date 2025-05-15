@@ -22,25 +22,27 @@ Simple byte and string based inter-device communication via BLE.
   https://github.com/adafruit/circuitpython/releases
 
 """
+
 try:
     from typing import Optional, Tuple
+
     import _bleio
     from circuitpython_typing import ReadableBuffer
 except ImportError:
     pass
 
 
-import time
 import struct
-from micropython import const
+import time
+
 from adafruit_ble import BLERadio
 from adafruit_ble.advertising import Advertisement, LazyObjectField
-from adafruit_ble.advertising.standard import ManufacturerData
 from adafruit_ble.advertising.adafruit import (
-    MANUFACTURING_DATA_ADT,
     ADAFRUIT_COMPANY_ID,
+    MANUFACTURING_DATA_ADT,
 )
-
+from adafruit_ble.advertising.standard import ManufacturerData
+from micropython import const
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_BLE_Radio.git"
@@ -74,9 +76,7 @@ class _RadioAdvertisement(Advertisement):
             return False
         # Check the key position within the manufacturer data. We already know
         # prefix matches so we don't need to check it twice.
-        return (
-            struct.unpack_from("<H", entry.advertisement_bytes, 5)[0] == _RADIO_DATA_ID
-        )
+        return struct.unpack_from("<H", entry.advertisement_bytes, 5)[0] == _RADIO_DATA_ID
 
     @property
     def msg(self) -> ReadableBuffer:
@@ -141,7 +141,7 @@ class Radio:
         """
         # Ensure length of message.
         if len(message) > MAX_LENGTH:
-            raise ValueError("Message too long (max length = {})".format(MAX_LENGTH))
+            raise ValueError(f"Message too long (max length = {MAX_LENGTH})")
         advertisement = _RadioAdvertisement()
         # Concatenate the bytes that make up the advertised message.
         advertisement.msg = struct.pack("<BB", self._channel, self.uid) + message
@@ -166,9 +166,7 @@ class Radio:
             return msg[0].decode("utf-8").replace("\x00", "")
         return None
 
-    def receive_full(
-        self, timeout: float = 1.0
-    ) -> Optional[Tuple[ReadableBuffer, int, float]]:
+    def receive_full(self, timeout: float = 1.0) -> Optional[Tuple[ReadableBuffer, int, float]]:
         """
         Returns a tuple containing three values representing a message received
         on the channel on which the radio is listening. If no message was
