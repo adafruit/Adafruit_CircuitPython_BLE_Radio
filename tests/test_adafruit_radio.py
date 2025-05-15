@@ -7,15 +7,15 @@ Simple unit tests for the adafruit_ble_radio module. Uses experimental mocking
 found in the testconf.py file. See comments therein for explanation of how it
 works.
 """
+
 import struct
 import time
 from unittest import mock
+
 import pytest
 from adafruit_ble.advertising import Advertisement
+
 import adafruit_ble_radio
-
-
-# pylint: disable=redefined-outer-name
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def test_radio_init_default():
     assert r.ble == adafruit_ble_radio.BLERadio()
     assert r.uid == 0
     assert r.msg_pool == set()
-    assert r._channel == 42  # pylint: disable=protected-access
+    assert r._channel == 42
 
 
 def test_radio_init_channel():
@@ -47,7 +47,7 @@ def test_radio_init_channel():
     If a channel argument is passed to initialisation, this is correctly set.
     """
     r = adafruit_ble_radio.Radio(channel=7)
-    assert r._channel == 7  # pylint: disable=protected-access
+    assert r._channel == 7
 
 
 def test_radio_configure_channel(radio_obj):
@@ -55,14 +55,14 @@ def test_radio_configure_channel(radio_obj):
     If a valid channel argument is passed to the configure method, the Radio
     instance's channel is updated to reflect this.
     """
-    assert radio_obj._channel == 42  # pylint: disable=protected-access
+    assert radio_obj._channel == 42
     radio_obj.configure(channel=7)
-    assert radio_obj._channel == 7  # pylint: disable=protected-access
+    assert radio_obj._channel == 7
 
 
 def test_radio_configure_channel_out_of_bounds(
     radio_obj,
-):  # pylint: disable=invalid-name
+):
     """
     If a channel not in the range 0-255 is passed into the configure method,
     then a ValueError exception is raised.
@@ -73,9 +73,9 @@ def test_radio_configure_channel_out_of_bounds(
         radio_obj.configure(channel=256)
     # Add just-in-bounds checks too.
     radio_obj.configure(channel=0)
-    assert radio_obj._channel == 0  # pylint: disable=protected-access
+    assert radio_obj._channel == 0
     radio_obj.configure(channel=255)
-    assert radio_obj._channel == 255  # pylint: disable=protected-access
+    assert radio_obj._channel == 255
 
 
 def test_radio_send(radio_obj):
@@ -109,7 +109,7 @@ def test_radio_send_bytes(radio_obj):
         radio_obj.send_bytes(msg)
         mock_sleep.assert_called_once_with(adafruit_ble_radio.AD_DURATION)
     spy_advertisement = Advertisement
-    chan = struct.pack("<B", radio_obj._channel)  # pylint: disable=protected-access
+    chan = struct.pack("<B", radio_obj._channel)
     uid = struct.pack("<B", 255)
     assert spy_advertisement.msg == chan + uid + msg
     radio_obj.ble.start_advertising.assert_called_once_with(spy_advertisement)
@@ -139,14 +139,14 @@ def test_radio_receive(radio_obj):
     assert radio_obj.receive() == "testing 1, 2, 3"
 
 
-def test_radio_receive_full_no_messages(radio_obj):  # pylint: disable=invalid-name
+def test_radio_receive_full_no_messages(radio_obj):
     """
     If no messages are detected by receive_full then it returns None.
     """
     radio_obj.ble.start_scan.return_value = []
     assert radio_obj.receive_full() is None
     radio_obj.ble.start_scan.assert_called_once_with(
-        adafruit_ble_radio._RadioAdvertisement,  # pylint: disable=protected-access
+        adafruit_ble_radio._RadioAdvertisement,
         minimum_rssi=-255,
         timeout=1,
         extended=True,
@@ -156,7 +156,7 @@ def test_radio_receive_full_no_messages(radio_obj):  # pylint: disable=invalid-n
 
 def test_radio_receive_full_duplicate_message(
     radio_obj,
-):  # pylint: disable=invalid-name
+):
     """
     If a duplicate message is detected, then receive_full returns None
     (indicating no *new* messages received).
@@ -172,7 +172,7 @@ def test_radio_receive_full_duplicate_message(
 
 def test_radio_receive_full_and_remove_expired_message_metadata(
     radio_obj,
-):  # pylint: disable=invalid-name
+):
     """
     Return the non-duplicate message.
 
@@ -186,9 +186,7 @@ def test_radio_receive_full_and_remove_expired_message_metadata(
     mock_entry.address.address_bytes = b"adr2"
     mock_entry.rssi = -40
     radio_obj.ble.start_scan.return_value = [mock_entry]
-    radio_obj.msg_pool.add(
-        (time.monotonic() - adafruit_ble_radio.AD_DURATION - 1, 42, 0, b"addr")
-    )
+    radio_obj.msg_pool.add((time.monotonic() - adafruit_ble_radio.AD_DURATION - 1, 42, 0, b"addr"))
     result = radio_obj.receive_full()
     assert result[0] == b"Hello"
     assert result[1] == -40

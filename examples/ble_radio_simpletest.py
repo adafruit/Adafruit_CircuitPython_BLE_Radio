@@ -6,10 +6,11 @@ This demo uses the adafruit_radio module to send and receive messages.
 Devices are switched between broadcast and scanning using the slide switch.
 The buttons change the message to be sent.
 """
-import digitalio
-import board
-from adafruit_ble_radio import Radio
 
+import board
+import digitalio
+
+from adafruit_ble_radio import Radio
 
 slide_switch = digitalio.DigitalInOut(board.SLIDE_SWITCH)
 slide_switch.pull = digitalio.Pull.UP
@@ -43,7 +44,7 @@ while True:
                 i -= 1
             i %= len(msg)
             m = msg[i]
-            print("Sending {}".format(m))
+            print(f"Sending {m}")
             r.send(m)
             # Alternative
             # r.send_bytes(b"Arbitrary bytes")
@@ -52,7 +53,7 @@ while True:
         while not slide_switch.value:
             m = r.receive_full()
             if m:
-                print("Received message: {}".format(m))
+                print(f"Received message: {m}")
             # Alternative
             # m = r.receive()
             # if m:
