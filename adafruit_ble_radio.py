@@ -207,7 +207,7 @@ class Radio:
                             # Ignore matched messages to avoid duplication.
                             duplicate = True
                     # Remove expired entries.
-                    self.msg_pool = self.msg_pool - expired_metadata
+                    self.msg_pool -= expired_metadata
                     if not duplicate:
                         # Add new message's metadata to the msg_pool and
                         # return it as a result.
